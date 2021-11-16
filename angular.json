@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "projects": {
+    "shopping-cart": {
+      "projectType": "application",
+      "root": "apps/shopping-cart",
+      "sourceRoot": "apps/shopping-cart/src",
+      "prefix": "npx",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/shopping-cart",
+            "index": "apps/shopping-cart/src/index.html",
+            "main": "apps/shopping-cart/src/main.ts",
+            "polyfills": "apps/shopping-cart/src/polyfills.ts",
+            "tsConfig": "apps/shopping-cart/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/shopping-cart/src/favicon.ico",
+              "apps/shopping-cart/src/assets"
+            ],
+            "styles": ["apps/shopping-cart/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/shopping-cart/src/environments/environment.ts",
+                  "with": "apps/shopping-cart/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "shopping-cart:build:production"
+            },
+            "development": {
+              "browserTarget": "shopping-cart:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "shopping-cart:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/shopping-cart/src/**/*.ts",
+              "apps/shopping-cart/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/shopping-cart"],
+          "options": {
+            "jestConfig": "apps/shopping-cart/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shopping-cart-e2e": {
+      "root": "apps/shopping-cart-e2e",
+      "sourceRoot": "apps/shopping-cart-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/shopping-cart-e2e/cypress.json",
+            "devServerTarget": "shopping-cart:serve:development",
+            "tsConfig": "apps/shopping-cart-e2e/tsconfig.json"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "shopping-cart:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/shopping-cart-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular",
+    "packageManager": "npm"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "shopping-cart"
+}
