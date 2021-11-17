@@ -1,0 +1,71 @@
+<div *ngIf="carts$ | async as allCarts">
+
+  <div id="htmlData">
+  <form #invoiceForm="ngForm">
+    <div class="container pt-2 mb-5">
+        <div class="row">
+            <div class="col-md">
+
+
+                          <button id="viewInvoiceBtn" type="button" class="btn btn-primary" (click)="invoiceForm.valid ? cartService.openPDF() : ''">View Invoice</button>
+                        <div class="row">
+
+                            <table class="table" *ngFor="let basket of allCarts; let i = index">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">Basket Name</th>
+                                        <th width="20%">Basket Items</th>
+                                        <th width="15%">Price</th>
+                                        <th width="15%">Quantity</th>
+                                        <th width="10%">Tax</th>
+                                        <th width="10%">Total Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  <td style="padding-left: 0.5rem;">
+                                    {{allCarts[i].name}}
+                                  </td>
+                                  <td>
+                                    <p *ngFor="let product of allCarts[i].products">
+                                      {{product.name}}
+                                    </p>
+                                  </td>
+                                  <td>
+                                    <p *ngFor="let product of allCarts[i].products">
+                                      {{product.unitPrice | currency}}
+                                    </p>
+                                  </td>
+
+                                  <td>
+                                    <p *ngFor="let product of allCarts[i].products">
+                                      1
+                                    </p>
+                                  </td>
+
+                                  <td>
+                                    <p *ngFor="let product of allCarts[i].products">
+                                      {{ product | calculateTax:'computed' | currency }}
+
+                                    </p>
+                                  </td>
+
+                                  <td>
+                                    <p *ngFor="let product of allCarts[i].products">
+                                      {{product | calculateTax:'total' | currency}}
+                                    </p>
+
+                                  </td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+    </div>
+
+  </form>
+  </div>
+  </div>
+
+
+

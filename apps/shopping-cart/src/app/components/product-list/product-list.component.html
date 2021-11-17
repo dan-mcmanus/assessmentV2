@@ -1,0 +1,41 @@
+<div class="container" *ngIf="products$ | async as products">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Add To Cart</th>
+        <th>Product Name</th>
+        <th>Retail Price</th>
+        <th>Product Category</th>
+        <th>Imported</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products; let i = index">
+        <td>
+          <form [formGroup]="form" (ngSubmit)="submit()">
+            <div>
+              <input type="checkbox" [value]="product.selected" (change)="onChange(product)" />
+
+            </div>
+          </form>
+        </td>
+        <td>{{product.name}}</td>
+        <td>{{product.unitPrice  | currency}}</td>
+        <td>{{product.category.name}}</td>
+        <td>{{product.imported}}</td>
+      </tr>
+    </tbody>
+  </table>
+<section>
+  <h4><b>Tracking selected products by id using a FormArray</b></h4>
+  <pre>
+    {{form.value | json}}
+  </pre>
+</section>
+<section>
+<h4><b>Tracking selected products using an Array</b></h4>
+  <pre>
+    {{selectedProducts | json}}
+  </pre>
+</section>
+</div>

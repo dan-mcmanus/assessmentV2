@@ -21,7 +21,10 @@
               "apps/shopping-cart/src/favicon.ico",
               "apps/shopping-cart/src/assets"
             ],
-            "styles": ["apps/shopping-cart/src/styles.scss"],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "apps/shopping-cart/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
