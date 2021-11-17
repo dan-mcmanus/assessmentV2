@@ -1,5 +1,5 @@
 <div class="container" *ngIf="products$ | async as products">
-  <table class="table table-striped">
+  <table id="productsListTable" class="table table-striped">
     <thead>
       <tr>
         <th>Add To Cart</th>
@@ -14,7 +14,7 @@
         <td>
           <form [formGroup]="form" (ngSubmit)="submit()">
             <div>
-              <input type="checkbox" [value]="product.selected" (change)="onChange(product)" />
+              <input id="inputProductSelected{{i}}" type="checkbox" [value]="product.selected" (change)="onChange(product)" />
 
             </div>
           </form>
@@ -28,7 +28,7 @@
   </table>
 <section>
   <h4><b>Tracking selected products by id using a FormArray</b></h4>
-  <pre>
+  <pre id="formValueDisplay">
     {{form.value | json}}
   </pre>
 </section>
