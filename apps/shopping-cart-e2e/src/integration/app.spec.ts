@@ -1,4 +1,7 @@
+
+
 import { getAllProductsListCheckBoxes, getProductsTable } from '../support/app.po';
+import { validateFileHasContent } from '../support/util';
 
 describe('shopping-cart', () => {
   beforeEach(() => cy.visit('/'));
@@ -35,8 +38,9 @@ describe('shopping-cart', () => {
     })
 
     it('products list should add id to form array when checkbox is checked', () => {
+      getAllProductsListCheckBoxes().should('have.value', 'false')
       getAllProductsListCheckBoxes().check();
-      //cy.get('#formValueDisplay').should('include.text', '1,\n    2,\n    3,\n    4,\n    5,\n    6,\n    7,\n    8\n ');
+
       getAllProductsListCheckBoxes().should('have.value', 'true');
     })
   })
@@ -45,6 +49,8 @@ describe('shopping-cart', () => {
     it('clicking View Invoice button downloads invoice', () => {
       cy.get('#viewInvoiceBtn').click();
 
+      cy.get('[data-cy=totalCostRow]').should('be.visible');
+      validateFileHasContent();
     })
   })
 });

@@ -1,26 +1,54 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Cart } from '../../models/cart';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { CalculateTaxPipe } from '../../pipes/calculate-tax.pipe';
+import { TaxService } from '../tax/tax.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private apiUrl = 'api/carts'
+  private apiUrl = 'api/carts';
+  calculatorTaxPipe = new CalculateTaxPipe(this.taxService)
+  invoiceGenerated = false;
+  totalTax = 0;
+  totalCost = 0;
 
-  constructor(private http: HttpClient) { }
+  private totalCostSub = new BehaviorSubject<number>(0);
+  private totalTaxSub = new BehaviorSubject<number>(0);
+  private invoiceGeneratedSub = new Subject<boolean>();
+
+  totalCost$ = this.totalCostSub.asObservable();
+  totalTax$ = this.totalTaxSub.asObservable();
+  invoiceGenerated$ = this.invoiceGeneratedSub.asObservable();
+
+  constructor(private http: HttpClient, private taxService: TaxService) { }
 
   getAllCarts(): Observable<Cart[]> {
     return this.http.get<Cart[]>(`${this.apiUrl}`)
     .pipe(
+      tap(carts => carts.map(cart =>
+        cart.products.forEach(product => {
+          this.totalCostSub.next(product.unitPrice);
+          this.totalTaxSub.next(this.calculatorTaxPipe.transform(product, 'computed'));
+        }))),
       catchError(this.handleError)
     );
   }
+
   public openPDF(): void {
+    this.invoiceGeneratedSub.next(true);
+    setTimeout(() => {
+      this.save();
+    }, 100)
+  }
+
+  private save(): void {
+
     const DATA: unknown = document.getElementById('htmlData');
 
     html2canvas(DATA as never).then(canvas => {
@@ -33,7 +61,8 @@ export class CartService {
       const position = 0;
       PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight)
 
-      PDF.save(`invoice-${new Date().toISOString()}.pdf`);
+      PDF.save(`invoice-${new Date().getDate()}.pdf`);
+
     });
   }
   private handleError(err: any) {

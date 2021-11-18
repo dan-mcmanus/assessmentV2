@@ -17,6 +17,22 @@
  */
 // eslint-disable-next-line no-unused-vars
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
-}
+  on('task', {
+    deleteFolder (folderName) {
+      console.log('deleting folder %s', folderName);
+
+      return new Promise((resolve, reject) => {
+        rmdir(folderName, { maxRetries: 10, recursive: true }, (err) => {
+          if (err && err.code !== 'ENOENT') {
+            console.error(err);
+
+            return reject(err);
+          }
+
+          resolve(null);
+        });
+      });
+    },
+
+  });
+};

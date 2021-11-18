@@ -1,28 +1,26 @@
 <div *ngIf="carts$ | async as allCarts">
+  <button
+  id="viewInvoiceBtn"
+  type="button"
+  class="btn btn-primary"
+  (click)="invoiceForm.valid ? cartService.openPDF() : ''">
+  View Invoice
+</button>
   <div id="htmlData">
     <form #invoiceForm="ngForm">
       <div class="container pt-2 mb-5">
         <div class="row">
-          <div class="col-md">
-            <button
-              id="viewInvoiceBtn"
-              type="button"
-              class="btn btn-primary"
-              (click)="invoiceForm.valid ? cartService.openPDF() : ''"
-            >
-              View Invoice
-            </button>
-            <div class="row">
+          <div class="col-md-*">
+
               <table
                 class="table"
-                *ngFor="let basket of allCarts; let i = index"
-              >
+                *ngFor="let basket of allCarts; let i = index">
                 <thead>
                   <tr>
                     <th id="basketNameTableHeader" width="10%">Basket Name</th>
                     <th id="basketItemsTableHeader" width="20%">Basket Items</th>
-                    <th id="priceTableHeader" width="15%">Price</th>
-                    <th id="quantityTableHeader" width="15%">Quantity</th>
+                    <th id="priceTableHeader" width="10%">Price</th>
+                    <th id="quantityTableHeader" width="10%">Quantity</th>
                     <th id="taxTableHeader" width="10%">Tax</th>
                     <th id="totalAmountTableHeader" width="10%">Total Amount</th>
                   </tr>
@@ -59,10 +57,23 @@
                   </td>
                 </tbody>
               </table>
-            </div>
+
+              <div data-cy="totalTaxRow" class="row" *ngIf="invoiceGenerated">
+                <div class="pull-right mr-10">
+                  <b>Total Tax</b>
+                  <div>{{totalTax | currency}}</div>
+                </div>
+              </div>
+              <div data-cy="totalCostRow" class="row pt-2" *ngIf="invoiceGenerated">
+                <div class="pull-right mr-10">
+                  <b>Total Cost</b>
+                  <div>{{totalCost | currency}}</div>
+                </div>
+              </div>
           </div>
         </div>
       </div>
     </form>
   </div>
 </div>
+
