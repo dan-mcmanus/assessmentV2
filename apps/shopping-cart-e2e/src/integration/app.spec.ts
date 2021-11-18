@@ -47,7 +47,7 @@ describe('shopping-cart', () => {
 
   describe('cart-component', () => {
     it('clicking View Invoice button downloads invoice', () => {
-      cy.get('#viewInvoiceBtn').click();
+      cy.get('[data-cy=view-invoice-button').click();
 
       cy.get('[data-cy=totalCostRow]').should('be.visible');
       validateFileHasContent();

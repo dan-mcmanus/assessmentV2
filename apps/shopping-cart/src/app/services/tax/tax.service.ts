@@ -5,7 +5,6 @@ import { Product } from '../../models/product';
   providedIn: 'root'
 })
 export class TaxService {
-
   salesTax = 0.1;
   importTax = 0.05;
   private readonly roundToNearest = 0.05;

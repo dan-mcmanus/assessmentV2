@@ -8,9 +8,8 @@ export const validateFileHasContent = () => {
   const downloadedFilename = path.join(downloadsFolder, `invoice-${new Date().getDate()}.pdf`)
 
   cy.readFile(downloadedFilename).should((text) => {
-    // validate the downloaded robots.txt file
     const lines = text.split('\n')
 
-    expect(lines.length).to.be.greaterThan(0);
+    expect(lines.length).to.be.greaterThan(1);
   })
 }

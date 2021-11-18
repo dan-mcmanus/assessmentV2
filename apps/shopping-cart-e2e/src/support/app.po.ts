@@ -1,4 +1,4 @@
 
-export const getAllProductsListCheckBoxes = () => cy.get('#productsListTable').children().get('input[type="checkbox"');
-export const getProductsTable = () => cy.get('#productsListTable');
+export const getAllProductsListCheckBoxes = () => cy.get('[data-cy=product-list-table').children().get('input[type="checkbox"');
+export const getProductsTable = () => cy.get('[data-cy=product-list-table');
 
